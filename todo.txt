@@ -1,0 +1,10 @@
+ToDo:
+[x] Poner un contador con boton
+[ ] Llevar la cuenta de cuantos Pomodoro se hacen
+    [ ] Resetear contador a las 12
+[ ] Hacer un watch del reloj constante
+[ ] Hacer break de 5 y de 15
+    [ ] Es un clock de otro color
+    [ ] Si el tiempo paso igual (con el watcher) ya no muestra el break
+-------
+[ ] Hacer kanban tipo trello
