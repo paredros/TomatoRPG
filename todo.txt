@@ -1,13 +1,14 @@
 ToDo:
 [x] Poner un contador con boton
 [x] Llevar la cuenta de cuantos Pomodoro se hacen
-    [ ] Resetear contador a las 12
+    [x] Resetear contador a las 12
 [x] Hacer un watch del reloj constante
-[ ] Hacer break de 5 y de 15
+[x] Hacer break de 5 y de 15
     [x] Es un clock de otro color
     [x] Si el tiempo paso igual (con el watcher) ya no muestra el break
-    [ ] Elegir entre break de 5 y de 15
-        [ ] son 3 de 5 y el cuarto de 15
-        [ ] Contar tiempo real de espera, si fue mas de 15 resetea el contador para llegar al de 15
+    [x] Elegir entre break de 5 y de 15
+        [x] son 3 de 5 y el cuarto de 15
+        [x] Contar tiempo real de espera, si fue mas de 15 resetea el contador para llegar al de 15
 -------
+[ ] Probar el reset de cambio de dia
 [ ] Hacer kanban tipo trello
