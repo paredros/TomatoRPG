@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('mainApp', ["ngRoute"]);
+var app = angular.module('mainApp', ["ngRoute","dndLists"]);
 
 app.config(function ($routeProvider, $locationProvider, $interpolateProvider, $logProvider) { //
     $locationProvider.html5Mode({
@@ -21,22 +21,55 @@ app.controller('MainCtrl', function ($scope) {
 
 });
 
-app.controller('KanbanApp', function ($scope,$timeout) {
+app.controller('KanbanApp', function ($scope, $window, $timeout) {
     $scope.models = {
         selected: null,
-        lists: {"A": [], "B": []}
+        lists: {"A": [], "B": []},
+        inputs: {"A": {status:"Empty", value:""}, "B": {status:"Empty", value:""}}
     };
 
     // Generate initial model
     for (var i = 1; i <= 3; ++i) {
-        $scope.models.lists.A.push({label: "Item A" + i});
-        $scope.models.lists.B.push({label: "Item B" + i});
+        $scope.models.lists.A.push({label: "Item A" + i, type:"Task", status:"Ready"});
+        $scope.models.lists.B.push({label: "Item B" + i, type:"Task", status:"Ready"});
     }
 
+    $scope.preAddItem = function(name){
+        //alert("FFFF:"+name);
+        $scope.models.inputs[name].status="ToFill";
+        var element = $window.document.getElementById('Input-'+name);//angular.element("#Input-"+name);
+        console.log(element);
+        $timeout(function () {
+            element.focus();
+        },100);
+
+    };
+
+    $scope.addItem = function(name){
+        var txt = $scope.models.inputs[name].value;
+        $scope.models.lists[name].push({label:txt, type:"Task", status:"Ready"});
+        $scope.models.inputs[name].value="";
+        $scope.models.inputs[name].status="Empty";
+    };
+    $scope.cancelAddItem = function(name){
+        $scope.models.inputs[name].value="";
+        $scope.models.inputs[name].status="Empty";
+    };
+    $scope.deleteItem = function(name,index){
+        $scope.models.lists[name].splice(index,1);
+    };
     // Model to JSON for demo purpose
     $scope.$watch('models', function(model) {
         $scope.modelAsJson = angular.toJson(model, true);
     }, true);
+
+    $scope.hoverIn = function(){
+        this.hoverFocus = true;
+    };
+
+    $scope.hoverOut = function(){
+        this.hoverFocus = false;
+    };
 });
 
 

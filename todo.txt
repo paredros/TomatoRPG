@@ -12,4 +12,16 @@ ToDo:
 -------
 [x] Pasar clock a un archivo aparte
 [ ] Probar el reset de cambio de dia§
+
 [ ] Hacer kanban tipo trello
+[ ] Grupos
+    [ ] Poder Agregar un Grupo Dinamicamente
+    [ ] Poder Eliminar un Grupo
+    [ ] Poder Mover Grupos
+[ ] Items
+    [x] Poder Agregar un Item Dinamicamente
+        [x] Poner un Item Clickeable
+        [x] Se transforma en Input Field que es el nombre de un nuevo item
+    [x] Poder Eliminar un Item
+    [ ] Poder Ponerle Tag
+    [ ] Ponerles Mood

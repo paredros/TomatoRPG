@@ -1,21 +1,51 @@
-<div class="card bg-light border-0 text-center" style="width: 600px">
+<div class="card bg-light border-0 text-center" style="width: 800px">
     <div class="card-body">
         <div ng-controller="KanbanApp">
-            <ul dnd-list="list">
-                <!-- The dnd-draggable directive makes an element draggable and will
-                     transfer the object that was assigned to it. If an element was
-                     dragged away, you have to remove it from the original list
-                     yourself using the dnd-moved attribute -->
-                <li ng-repeat="item in list"
-                    dnd-draggable="item"
-                    dnd-moved="list.splice($index, 1)"
-                    dnd-effect-allowed="move"
-                    dnd-selected="models.selected = item"
-                    ng-class="{'selected': models.selected === item}"
-                    >
-                    {{item.label}}
-                </li>
-            </ul>
+            <div-- class="kanbanHolder row">
+                <!--div class="col-md-8">
+                    <div class="row"-->
+                        <div ng-repeat="(listName, list) in models.lists" class="mr-2">
+                            <div class="card">
+                                <div class="card-heading">
+                                    <h3 class="panel-title">List {$ listName $}</h3>
+                                </div>
+                                <div class="card-body text-left">
+                                    <ul dnd-list="list">
+                                        <!-- The dnd-draggable directive makes an element draggable and will
+                                             transfer the object that was assigned to it. If an element was
+                                             dragged away, you have to remove it from the original list
+                                             yourself using the dnd-moved attribute -->
+                                        <li ng-repeat="item in list"
+                                            dnd-draggable="item"
+                                            dnd-moved="list.splice($index, 1)"
+                                            dnd-effect-allowed="move"
+                                            dnd-selected="models.selected = item"
+                                            ng-class="{'selected': models.selected === item}"
+                                            ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()"
+                                            >
+                                            <span ng-show="hoverFocus" class="float-right" style="margin-top: -5px; margin-right: -10px">
+                                                <button type="button" class="btn btn-dark btn-sm" ng-click="deleteItem(listName,$index)"><i class="fas fa-trash-alt"></i></button>
+                                            </span>
+                                            <div class="w-75">
+                                                {$ item.label $}
+                                            </div>
+
+
+                                        </li>
+                                    </ul>
+                                    <div ng-show="models.inputs[listName].status == 'Empty'">
+                                        <button type="button" class="btn btn-primary" ng-click="preAddItem(listName)">Fill</button>
+                                    </div>
+                                    <div ng-show="models.inputs[listName].status == 'ToFill'">
+                                        <input id="{$ 'Input-' + listName $}" class="w-100" ng-keyup="$event.keyCode == 13 && addItem(listName)" ng-keydown="$event.keyCode == 27 && cancelAddItem(listName)" ng-blur="cancelAddItem(listName)" ng-model="models.inputs[listName].value">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <!--/div>
+                </div-->
+            </div>
+
         </div>
     </div>
 </div>
