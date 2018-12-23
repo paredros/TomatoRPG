@@ -10,5 +10,6 @@ ToDo:
         [x] son 3 de 5 y el cuarto de 15
         [x] Contar tiempo real de espera, si fue mas de 15 resetea el contador para llegar al de 15
 -------
-[ ] Probar el reset de cambio de dia
+[x] Pasar clock a un archivo aparte
+[ ] Probar el reset de cambio de dia§
 [ ] Hacer kanban tipo trello
