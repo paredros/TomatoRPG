@@ -1,4 +1,38 @@
 ToDo:
+-------
+[ ] Probar el reset de cambio de dia
+
+[ ] Organizar el archivo de Kanban en varios separados, para ser mas prolijo
+
+[ ] Items
+    [x] Poder Agregar un Item Dinamicamente
+        [x] Poner un Item Clickeable
+        [x] Se transforma en Input Field que es el nombre de un nuevo item
+    [x] Poder Eliminar un Item
+    [x] Si hago doble click me permite editar el nombre
+    [ ] Poder Ponerle Tag
+    [x] Que los Moods sean Drag and Drop
+        [x] Probar con el sistema de drag de copy/link, para capturar donde draguie
+    [ ] Ponerles Mood
+        [ ] Creatividad
+        [ ] Estudio
+        [ ] Repetitivo
+        [ ] Urgente
+        [ ] Must Done (no tiene que ser urgente, pero se tiene que hacer durante el dia)
+        [ ] Short Task
+        [ ] Long Task
+    [ ] Asignar Mood por Over mas key 1, 2, 3, 4, como shortcuts
+    [ ] Hacer filtro para ver por mood
+
+[ ] Emprolijar el CSS para que sean algunas zonas de drop mas chicas
+[ ] Diseñar app https://ar.pinterest.com/alexjgetty/kanban-boards/?lp=true
+
+
+
+
+------------
+DONE
+
 [x] Poner un contador con boton
 [x] Llevar la cuenta de cuantos Pomodoro se hacen
     [x] Resetear contador a las 12
@@ -11,9 +45,6 @@ ToDo:
         [x] Contar tiempo real de espera, si fue mas de 15 resetea el contador para llegar al de 15
 -------
 [x] Pasar clock a un archivo aparte
-[ ] Probar el reset de cambio de dia
-
-
 [x] Probar tener solo una dropzone, y ordenar la lista horizontal
 [x] Hacer kanban tipo trello
 [x] Grupos
@@ -24,23 +55,4 @@ ToDo:
         [x] poner icono de eliminar
     [x] Poder Cambiar el nombre
     [x] Poder Mover Grupos
-[ ] Items
-    [x] Poder Agregar un Item Dinamicamente
-        [x] Poner un Item Clickeable
-        [x] Se transforma en Input Field que es el nombre de un nuevo item
-    [x] Poder Eliminar un Item
-    [x] Si hago doble click me permite editar el nombre
-    [ ] Poder Ponerle Tag
-    [ ] Que los Moods sean Drag and Drop
-        [ ] Probar con el sistema de drag de copy/link, para capturar donde draguie
-    [ ] Ponerles Mood
-        [ ] Creatividad
-        [ ] Estudio
-        [ ] Repetitivo
-        [ ] Urgente
-        [ ] Must Done (no tiene que ser urgente, pero se tiene que hacer durante el dia)
-        [ ] Short Task
-        [ ] Long Task
-    [ ] Hacer filtro para ver por mood
 [x] Agregarle UNDO
-[ ] Diseñar app https://ar.pinterest.com/alexjgetty/kanban-boards/?lp=true

@@ -88,6 +88,7 @@ app.controller('KanbanApp', function ($scope, $window, $timeout) {
 app.controller("KanbanApp2", function($scope,$window, $timeout) {
     var undoFlag=false;
     var undoPointer=0;
+    $scope.CURRENT_ID_TOP = 8;
     $scope.history = [];
     $scope.models = {
         canUndo:false,
@@ -110,7 +111,6 @@ app.controller("KanbanApp2", function($scope,$window, $timeout) {
                     "type": "container",
                     "label": "ToDo",
                     status:"Ready",
-                    "id": 1,
                     "input":{
                             status:"Empty",
                             value:""
@@ -121,13 +121,15 @@ app.controller("KanbanApp2", function($scope,$window, $timeout) {
                                 "type": "item",
                                 "label": "tarea 1",
                                 status:"Ready",
-                                "id": "1"
+                                "moods":[],
+                                "id": 1
                             },
                             {
                                 "type": "item",
                                 "label": "tarea 2",
                                 status:"Ready",
-                                "id": "2"
+                                "moods":[],
+                                "id": 2
                             }
                         ]
                         ]
@@ -137,7 +139,6 @@ app.controller("KanbanApp2", function($scope,$window, $timeout) {
                     "type": "container",
                     "label": "Doing",
                     status:"Ready",
-                    "id": 10,
                     "input":{
                             status:"Empty",
                             value:""
@@ -148,13 +149,15 @@ app.controller("KanbanApp2", function($scope,$window, $timeout) {
                                 "type": "item",
                                 "label": "hacer 1",
                                 status:"Ready",
-                                "id": "11"
+                                "moods":[],
+                                "id": 3
                             },
                             {
                                 "type": "item",
                                 "label": "hacer 2",
                                 status:"Ready",
-                                "id": "12"
+                                "moods":[],
+                                "id": 4
                             }
                         ]
                         ]
@@ -164,7 +167,6 @@ app.controller("KanbanApp2", function($scope,$window, $timeout) {
                     "type": "container",
                     "label": "Done",
                     status:"Ready",
-                    "id": "2",
                     "input":{
                             status:"Empty",
                             value:""
@@ -175,26 +177,44 @@ app.controller("KanbanApp2", function($scope,$window, $timeout) {
                                 "type": "item",
                                 "label": "hecha 1",
                                 status:"Ready",
-                                "id": "9"
+                                "moods":[],
+                                "id": 5
                             },
                             {
                                 "type": "item",
                                 "label": "hecha 2",
                                 status:"Ready",
-                                "id": "10"
+                                "moods":[],
+                                "id": 6
                             },
                             {
                                 "type": "item",
                                 "label": "hecha 3",
                                 status:"Ready",
-                                "id": "11"
+                                "moods":[],
+                                "id": 7
                             }
                         ]
                     ]
                 }
             ]
 
-        }
+        },
+        moods: {"BASE": [
+                {
+                    "label":"CREATIVO",
+                    "code":"CRT",
+                    "color":"green",
+                    "type":"MOOD"
+                },
+                {
+                    "label":"ESTUDIO",
+                    "code":"EST",
+                    "color":"blue",
+                    "type":"MOOD"
+                }
+
+            ]},
     };
 
     $scope.$watch('models.dropzones', function(model) {
@@ -219,7 +239,13 @@ app.controller("KanbanApp2", function($scope,$window, $timeout) {
     $scope.addItem = function(groupIndex){
         var txt = $scope.models.dropzones.A[groupIndex].input.value;
         if(txt!="") {
-            $scope.models.dropzones.A[groupIndex].cards[0].push({label: txt, type: "item", status: "Ready"});
+            $scope.models.dropzones.A[groupIndex].cards[0].push({
+                label: txt,
+                type: "item",
+                status: "Ready",
+                moods:[],
+                id: $scope.getNewId()
+            });
         }
         $scope.models.dropzones.A[groupIndex].input.value="";
         $scope.models.dropzones.A[groupIndex].input.status="Empty";
@@ -273,7 +299,6 @@ app.controller("KanbanApp2", function($scope,$window, $timeout) {
                     "type": "container",
                     "label": txt,
                     status: "Ready",
-                    "id": "2",
                     "input": {
                         status: "Empty",
                         value: ""
@@ -353,4 +378,64 @@ app.controller("KanbanApp2", function($scope,$window, $timeout) {
     }
     //$scope.saveHistory(angular.toJson($scope.models.dropzones, true));
     //$scope.history.push(angular.toJson($scope.models.dropzones, true));
+    $scope.dragoverCallbackMoodInvere = function(groupIndex, index, item){
+        console.log(groupIndex+":"+index);
+        console.log(item)
+        var puede=true;
+        var moods = $scope.models.dropzones.A[groupIndex].cards[0][index].moods;
+        for(var i=0;i<moods.length;i++){
+            if(moods[i]==item.code){
+                puede=false;
+            }
+        }
+        if(puede){
+            moods.push(item.code);
+        }
+    }
+    $scope.dragoverCallbackMood = function(code,item) {
+        console.log("BÑA"+code+":")
+        console.log(item)
+        var elem = $scope.findById(item.id);
+        if(elem.container!=-1 && elem.index!=-1){
+            var puede=true;
+            var moods = $scope.models.dropzones.A[elem.container].cards[0][elem.index].moods;
+            for(var i=0;i<moods.length;i++){
+                if(moods[i]==code){
+                    puede=false;
+                }
+            }
+            if(puede){
+                moods.push(code);
+            }
+        }
+    };
+    $scope.getNewId = function(){
+        var r=$scope.CURRENT_ID_TOP;
+        $scope.CURRENT_ID_TOP++;
+        return r;
+    }
+    $scope.findById=function (id) {
+        var r={
+            container:-1,
+            index:-1
+        }
+        for(var i=0;i<$scope.models.dropzones.A.length;i++){
+            for(var j=0;j<$scope.models.dropzones.A[i].cards[0].length;j++){
+                if($scope.models.dropzones.A[i].cards[0][j].id==id){
+                    r.container=i;
+                    r.index=j;
+                }
+            }
+        }
+        return r;
+    }
+    $scope.getColorMoodByCode=function (code) {
+        var r = 'black'
+        for(var i=0;i<$scope.models.moods.BASE.length;i++){
+            if($scope.models.moods.BASE[i].code==code){
+                r = $scope.models.moods.BASE[i].color;
+            }
+        }
+        return r;
+    }
 });
