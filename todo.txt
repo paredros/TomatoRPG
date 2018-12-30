@@ -11,17 +11,36 @@ ToDo:
         [x] Contar tiempo real de espera, si fue mas de 15 resetea el contador para llegar al de 15
 -------
 [x] Pasar clock a un archivo aparte
-[ ] Probar el reset de cambio de dia§
+[ ] Probar el reset de cambio de dia
 
-[ ] Hacer kanban tipo trello
-[ ] Grupos
-    [ ] Poder Agregar un Grupo Dinamicamente
-    [ ] Poder Eliminar un Grupo
-    [ ] Poder Mover Grupos
+
+[x] Probar tener solo una dropzone, y ordenar la lista horizontal
+[x] Hacer kanban tipo trello
+[x] Grupos
+    [x] Limitar a solo containers en las dropzones
+    [x] Tener solo un container por zona
+    [x] Poder Agregar un Grupo Dinamicamente
+    [x] Poder Eliminar un Grupo
+        [x] poner icono de eliminar
+    [x] Poder Cambiar el nombre
+    [x] Poder Mover Grupos
 [ ] Items
     [x] Poder Agregar un Item Dinamicamente
         [x] Poner un Item Clickeable
         [x] Se transforma en Input Field que es el nombre de un nuevo item
     [x] Poder Eliminar un Item
+    [x] Si hago doble click me permite editar el nombre
     [ ] Poder Ponerle Tag
+    [ ] Que los Moods sean Drag and Drop
+        [ ] Probar con el sistema de drag de copy/link, para capturar donde draguie
     [ ] Ponerles Mood
+        [ ] Creatividad
+        [ ] Estudio
+        [ ] Repetitivo
+        [ ] Urgente
+        [ ] Must Done (no tiene que ser urgente, pero se tiene que hacer durante el dia)
+        [ ] Short Task
+        [ ] Long Task
+    [ ] Hacer filtro para ver por mood
+[x] Agregarle UNDO
+[ ] Diseñar app https://ar.pinterest.com/alexjgetty/kanban-boards/?lp=true

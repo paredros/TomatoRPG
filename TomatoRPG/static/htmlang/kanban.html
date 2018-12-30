@@ -1,7 +1,7 @@
 <div class="card bg-light border-0 text-center" style="width: 800px">
     <div class="card-body">
         <div ng-controller="KanbanApp">
-            <div-- class="kanbanHolder row">
+            <div class="kanbanHolder row">
                 <!--div class="col-md-8">
                     <div class="row"-->
                         <div ng-repeat="(listName, list) in models.lists" class="mr-2">
@@ -22,12 +22,18 @@
                                             dnd-selected="models.selected = item"
                                             ng-class="{'selected': models.selected === item}"
                                             ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()"
+                                            ng-dblclick="editItem(listName,$index)"
                                             >
                                             <span ng-show="hoverFocus" class="float-right" style="margin-top: -5px; margin-right: -10px">
                                                 <button type="button" class="btn btn-dark btn-sm" ng-click="deleteItem(listName,$index)"><i class="fas fa-trash-alt"></i></button>
                                             </span>
-                                            <div class="w-75">
-                                                {$ item.label $}
+                                            <div ng-show="item.status == 'Ready'">
+                                                <div class="w-75">
+                                                    {$ item.label $}
+                                                </div>
+                                            </div>
+                                            <div ng-show="item.status == 'Edit'">
+                                                <input id="{$ 'Input-' + listName + '-' + $index $}" class="w-75" ng-keyup="$event.keyCode == 13 && cancelEditItem(listName,$index)" ng-keydown="$event.keyCode == 27 && cancelEditItem(listName,$index)" ng-blur="cancelEditItem(listName,$index)" ng-model="item.label">
                                             </div>
 
 
@@ -49,3 +55,123 @@
         </div>
     </div>
 </div>
+
+<div ng-controller="KanbanApp2">
+    <span ng-show="models.canUndo == true">
+        <button type="button" class="btn btn-warning" ng-click="undo()"><i class="fas fa-undo"></i></button>
+    </span>
+    <span ng-show="models.canUndo == false">
+        <button type="button" class="btn btn-dark"><i class="fas fa-undo"></i></button>
+    </span>
+    <span ng-show="models.canRedo == true">
+        <button type="button" class="btn btn-warning" ng-click="redo()"><i class="fas fa-redo"></i></button>
+    </span>
+    <span ng-show="models.canRedo == false">
+        <button type="button" class="btn btn-dark"><i class="fas fa-redo"></i></button>
+    </span>
+    <script type="text/ng-template" id="list.html">
+        <ul dnd-list="list" dnd-allowed-types="models.allowedTypes" dnd-horizontal-list="true" class="itemlist">
+            <li ng-repeat="(groupIndex, conttemp) in list"
+                dnd-draggable="conttemp"
+                dnd-effect-allowed="move"
+                dnd-moved="list.splice($index, 1)"
+                dnd-selected="models.selected = conttemp"
+                dnd-type="conttemp.type"
+                ng-include="conttemp.type + '.html'"
+                >
+            </li>
+            <li class="bg-dark">
+                <div class="card kanbanHolder bg-transparent border-0">
+                    <div class="card-body text-left">
+                        <div ng-show="models.globalCreator.status == 'Empty'">
+                            <button type="button" class="btn btn-primary" ng-click="preAddContainer()">+ List</button>
+                        </div>
+                        <div ng-show="models.globalCreator.status == 'ToFill'">
+                            <input id="{$ 'InputGlobalCreator' $}" class="w-100" ng-keyup="$event.keyCode == 13 && addContainer()" ng-keydown="$event.keyCode == 27 && cancelAddContainer()" ng-blur="cancelAddContainer()" ng-model="models.globalCreator.value">
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </script>
+    <script type="text/ng-template" id="list2.html">
+        <ul dnd-list="list" dnd-allowed-types="models.allowedTypes2">
+            <li ng-repeat="item in list"
+                dnd-draggable="item"
+                dnd-effect-allowed="move"
+                dnd-moved="list.splice($index, 1)"
+                dnd-selected="models.selected = item"
+                dnd-type="item.type"
+                ng-class="{selected: models.selected === item}"
+                ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()"
+                ng-dblclick="editItem(groupIndex,$index)"
+                ng-include="item.type + '.html'" class="bg-light">
+            </li>
+        </ul>
+    </script>
+
+    <!-- This template is responsible for rendering a container element. It uses
+         the above list template to render each container column -->
+    <script type="text/ng-template" id="container.html">
+        <div class="card kanbanHolder bg-transparent border-0">
+            <div class="card-heading" ng-mouseover="hoverInContainer()" ng-mouseleave="hoverOutContainer()" ng-dblclick="editContainer($index)">
+                <span ng-show="hoverFocusContainer" class="position-absolute" style="top: 0px; right: 0px">
+                <!--span class="float-right" style="margin-top: 0px; margin-right: 0px"-->
+                    <button type="button" class="btn btn-dark btn-sm" ng-click="deleteContainer($index)"><i class="fas fa-trash-alt"></i></button>
+                </span>
+                <div class="clearfix"></div>
+                <div ng-show="conttemp.status == 'Ready'">
+                    <h3 class="text-white">{$ conttemp.label $} </h3>
+                </div>
+                <div ng-show="conttemp.status == 'Edit'">
+                    <input id="{$ 'InputNameContainer-' + $index $}" class="w-75" ng-keyup="$event.keyCode == 13 && cancelEditContainer($index)" ng-keydown="$event.keyCode == 27 && cancelEditContainer($index)" ng-blur="cancelEditContainer($index)" ng-model="conttemp.label">
+                </div>
+            </div>
+            <div class="card-body text-left">
+                <div ng-repeat="list in conttemp.cards" ng-include="'list2.html'"></div>
+            </div>
+            <!--div ng-show="models.inputs[conttemp.label].status == 'Empty'"-->
+            <div ng-show="conttemp.input.status == 'Empty'">
+                <button type="button" class="btn btn-primary" ng-click="preAddItem(conttemp.label,$index)">Add</button>
+            </div>
+            <!--div ng-show="models.inputs[conttemp.label].status == 'ToFill'"-->
+            <div ng-show="conttemp.input.status == 'ToFill'">
+                <input id="{$ 'InputCont-' + $index $}" class="w-100" ng-keyup="$event.keyCode == 13 && addItem($index)" ng-keydown="$event.keyCode == 27 && cancelAddItem($index)" ng-blur="cancelAddItem($index)" ng-model="models.dropzones.A[$index].input.value">
+            </div>
+        </div>
+    </script>
+
+    <!-- Template for a normal list item -->
+    <script type="text/ng-template" id="item.html">
+        <span ng-show="hoverFocus" class="float-right" style="margin-top: -5px; margin-right: -10px">
+            <button type="button" class="btn btn-dark btn-sm" ng-click="deleteItem(groupIndex,$index)"><i class="fas fa-trash-alt"></i></button>
+        </span>
+        <div ng-show="item.status == 'Ready'">
+            <div class="w-75">
+                {$ item.label $}
+            </div>
+        </div>
+        <div ng-show="item.status == 'Edit'">
+            <input id="{$ 'Input-' + groupIndex + '-' + $index $}" class="w-75" ng-keyup="$event.keyCode == 13 && cancelEditItem(groupIndex,$index)" ng-keydown="$event.keyCode == 27 && cancelEditItem(groupIndex,$index)" ng-blur="cancelEditItem(groupIndex,$index)" ng-model="item.label">
+        </div>
+        <!--div class="item">{$ item.label $}</div-->
+    </script>
+
+    <!-- Main area with dropzones and source code -->
+    <div class="col-12">
+        <div class="row">
+            <div ng-repeat="(zone, list) in models.dropzones" class="col-12">
+                <div class="dropzone">
+                    <!-- The dropzone also uses the list template -->
+                    <h3>Task List {$ zone $}</h3>
+                    <div ng-include="'list.html'" ></div>
+                </div>
+            </div>
+        </div>
+
+        <div view-source="nested"></div>
+        <h2>Generated Model</h2>
+    <pre>{$ modelAsJson $}</pre>
+    </div>
+</div>
+
